@@ -1,0 +1,24 @@
+{
+    "dataset": {
+        "name" : "autoregressive",
+        "length": 5000
+    },
+
+    "model": {
+        "epochs_for_Q_Learning_fit": "auto",
+        "batch_size_for_learning": 128,
+        "l2_penalty": 1e-4,
+        "dropout_level": 0.1,
+        "scale_NN": 1
+    },
+
+    "window_size" : 60,
+
+    "rewards": "LR",
+    "episode_length": 300,
+    "frequency_q_learning": 100,
+    "batch_size_replay_sampling": 2048,
+    "Q_learning_iterations": 20,
+    "discount_factor_Q_learning": 0.9,
+    "long_positions_only" : false
+}

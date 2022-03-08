@@ -1,0 +1,22 @@
+{
+    "dataset": {
+        "name" : "sin_wave",
+        "length": 400
+    },
+
+    "model": {
+        "epochs_for_Q_Learning_fit": "auto",
+        "batch_size_for_learning": 64,
+        "l2_penalty": 1e-4,
+        "scale_NN": 1
+    },
+
+    "window_size" : 12,
+
+    "rewards" : ["LR", "SR", "POWC"],
+    "frequency_q_learning": 200,
+    "batch_size_replay_sampling": 2048,
+    "Q_learning_iterations": 20,
+    "discount_factor_Q_learning": 0.9,
+    "same_age_replay": true
+}

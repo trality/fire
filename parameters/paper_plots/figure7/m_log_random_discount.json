@@ -1,0 +1,32 @@
+{
+    "dataset": {
+        "name" : "bitcoin_paper_fig7_m_random_discount",
+        "path": "datasets/btc_h.csv",
+        "column_price": "close",
+        "column_time": "start",
+        "length" : 25000,
+        "eval_proportion": 0.16,
+        "test_proportion": 0.2
+    },
+
+    "model": {
+        "epochs_for_Q_Learning_fit": "auto",
+        "batch_size_for_learning": 512,
+        "l2_penalty": 0,
+        "dropout_level": 0,
+        "scale_NN": 2
+    },
+
+    "rewards" : ["LR", "SR", "ALR", "POWC"],
+
+    "window_size": 24,
+    
+    "episode_length": 2000,
+    "frequency_q_learning": 400,
+    "frequency_target_exchange": 4,  
+    "batch_size_replay_sampling": 2048,
+    "Q_learning_iterations": 500,
+    "discount_factor_Q_learning": 0.9,
+    "random_gamma": true,
+    "long_positions_only": false
+}

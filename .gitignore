@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# hidden paths
+.*
+
+# Experiments results
+results_of_experiments/
+
+# datasets
+datasets
