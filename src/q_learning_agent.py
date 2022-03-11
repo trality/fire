@@ -99,13 +99,17 @@ class QLearningAgent():
             covariance = covariance.reshape(1, 1)
         return linalg.inv(linalg.sqrtm(covariance))
 
-    def get_rescaled_random_sample_from_replay(self, batch_size):
-        experiences = deepcopy(self.replay.random_sample(batch_size))
-        scaling_matrix = self.replay_rewards_scaling_matrix()
+    def get_augmented_experiences_sample(self, batch_size):
+        experiences = deepcopy(self.replay.random_sample(batch_size, replace=True))
+        experiences['weights'] = self.generate_random_weights(batch_size)
+        experiences['gamma'] = self.generate_random_gammas(batch_size) if par.random_gamma \
+            else np.tile(par.discount_factor_Q_learning, (batch_size, 1))
+        return experiences
+
+    def rescale_experiences_sample(self, experiences: dict):
         experiences['vector_of_rewards'] = np.dot(
-            experiences['vector_of_rewards'], scaling_matrix) / np.linalg.norm(experiences['weights'], axis=-1).reshape(-1, 1)
-        experiences['reward'] = np.sum(
-            experiences['vector_of_rewards'] * experiences['weights'], axis=-1)
+            experiences['vector_of_rewards'],
+            self.replay_rewards_scaling_matrix()) / np.linalg.norm(experiences['weights'], axis=-1).reshape(-1, 1)
         return experiences
 
     def one_step_of_training(self):
@@ -114,8 +118,8 @@ class QLearningAgent():
         as per Deep-Q learning algorithm with memory replay
         """
 
-        experiences = self.get_rescaled_random_sample_from_replay(
-            par.batch_size_replay_sampling)
+        experiences = self.rescale_experiences_sample(
+            self.get_augmented_experiences_sample(par.batch_size_replay_sampling))
 
         current_qs_list = self.model([experiences['starting_observation'],
                                       experiences['starting_position'],
@@ -127,7 +131,9 @@ class QLearningAgent():
                                             experiences['weights'],
                                             experiences['gamma']]).numpy()
 
-        max_future_q = experiences['reward'] \
+        reward = np.sum(experiences['vector_of_rewards'] * experiences['weights'], axis=-1)
+
+        max_future_q = reward \
             + np.where(~experiences['done'].squeeze(),
                        experiences['gamma'].squeeze() * np.max(future_qs_list, axis=-1),
                        0)
@@ -173,15 +179,6 @@ class QLearningAgent():
 
     def sample_random_action(self, n=None):
         return np.random.choice(self.get_possible_actions(), n)
-
-    def append_experience_to_replay(self, experience):
-        for _ in range(par.number_virtual_steps + 1):
-            experience['gamma'] = self.generate_random_gammas(
-                1) if par.random_gamma else par.discount_factor_Q_learning
-            experience['weights'] = self.generate_random_weights(1).squeeze()
-            experience['reward'] = np.sum(
-                experience['weights'] * experience['vector_of_rewards'])
-            self.replay.append(experience)
 
     def get_specific_reward_weights(self, reward, steps):
         """Returns a weight vector where specified reward is weighted 1, others 0"""
@@ -249,7 +246,7 @@ class QLearningAgent():
                     'done': done,
                     'vector_of_rewards': dict_to_array(rewards)
                 }
-                self.append_experience_to_replay(experience)
+                self.replay.append(experience)
 
             i += 1
 

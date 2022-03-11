@@ -51,11 +51,11 @@ class Parameters():
     def set(model, dataset,
             frequency_q_learning, Q_learning_iterations, discount_factor_Q_learning,
             batch_size_replay_sampling, frequency_target_exchange=-1,
-            environment={}, same_age_replay=True, random_gamma=False, train=True,
+            environment={}, random_gamma=False, train=True,
             adjacent_episodes=False, frequency_of_weight_sampling=1,
             learning_rate_Q_learning=0.7, replay_max_len=25000,
             max_possible_gamma='auto', long_positions_only=True,
-            number_virtual_steps='auto', plot_frequency=10, window_size=60,
+            plot_frequency=10, window_size=60,
             rewards="all", episode_length=None, **kwargs):
 
         # model
@@ -75,7 +75,7 @@ class Parameters():
         Parameters.random_gamma = random_gamma
         Parameters.episode_length = episode_length
         Parameters.adjacent_episodes = adjacent_episodes
-        Parameters.same_age_replay = same_age_replay
+        Parameters.replay_max_len = replay_max_len
         Parameters.long_positions_only = long_positions_only
         Parameters.batch_size_replay_sampling = batch_size_replay_sampling
         Parameters.min_possible_gamma = discount_factor_Q_learning * 0.9
@@ -98,8 +98,6 @@ class Parameters():
         Parameters.plot_frequency = plot_frequency
 
         Parameters.set_rewards(rewards)
-        Parameters.set_number_virtual_steps(number_virtual_steps)
-        Parameters.set_max_replay_length(replay_max_len)
 
         assign_attributes(Parameters, kwargs)
 
@@ -110,25 +108,11 @@ class Parameters():
         else:
             Parameters.max_possible_gamma = 1
 
-    def set_max_replay_length(replay_max_len):
-        Parameters.replay_max_len = replay_max_len
-        if Parameters.same_age_replay:
-            Parameters.replay_max_len = Parameters.replay_max_len * \
-                (Parameters.number_virtual_steps + 1)
-
     def set_rewards(rewards):
         if isinstance(rewards, list):
             Parameters.rewards = rewards
         else:
             Parameters.rewards = [rewards]
-
-    def set_number_virtual_steps(number_virtual_steps):
-        if number_virtual_steps == 'auto':
-            Parameters.number_virtual_steps = len(Parameters.rewards) - 1
-
-        # When there is only one reward, the augmentation is not necessary
-        if len(Parameters.rewards) == 1:
-            Parameters.number_virtual_steps = 0
 
     def set_frequency_target_exchange(frequency_target_exchange):
         # frequency_target_exchange is set to after each episode (-1)
