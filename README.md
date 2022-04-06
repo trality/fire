@@ -20,14 +20,14 @@ We recommend python version `3.8.10`. (Check your version with `python3 --versio
 
 We recommend using a virtual environment: to create it, run
 ```
-$ python3 -m venv .venv
-$ source .venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 in the repository's main folder.
 
 Install the required packages and download the Bitcoin dataset by running
 ```
-$ make
+make
 ```
 in the main folder.
 
@@ -36,7 +36,7 @@ in the main folder.
 
 To test the code you can run the sin-wave example:
 ```
-$ python3 main.py parameters/sin_wave_test_multi.json
+python3 main.py parameters/sin_wave_test_multi.json
 ```
 
 
@@ -44,7 +44,7 @@ $ python3 main.py parameters/sin_wave_test_multi.json
 In order to run a particular experiments run the `main.py` script adding as
 argument a json configuration file:
 ```
-$ python3 main.py <your configuration file>.json
+python3 main.py <your configuration file>.json
 ```
 the json configuration file contains information about:
 - The chosen dataset
@@ -61,6 +61,7 @@ We provide all configuration files for the experiments on the Bitcoin dataset
 that are shown in the paper.
 To run the experiments use:
 ```
+git checkout e2bc651b07eec388ee0b03228e0acdee8550ba7d
 sh scripts/run_experiments_in_folder.sh parameters/paper_plots
 ```
 
@@ -72,7 +73,7 @@ For the simulation we discussed in our paper we used two datasets:
 
 You can download the Bitcoin dataset by running:
 ```
-$ make datasets
+make datasets
 ```
 (this is not necessary if you already ran `make`)
 
@@ -80,9 +81,9 @@ $ make datasets
 ## Latex for plots
 If you want to use latex to create the plots you need to install the following
 packages:
-
-`$ sudo apt-get install texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra dvipng`
-
+```
+sudo apt-get install texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra dvipng
+```
 You can now set `"text.usetex": True,` at the top of `src/plots.py`.
 
 ## Acknowledgement of sources
