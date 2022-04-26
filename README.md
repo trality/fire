@@ -9,13 +9,13 @@ Multi-Objective trading algorithms.
 - Critic-only Deep Q-Learning RL agent with Hindsight Experience Replay
 [link](https://towardsdatascience.com/deep-q-learning-tutorial-mindqn-2a4c855abffc)
 - Single- and Multi-Objective reward learning with generalization in the sense of
-[[Friedman, Fontaine](https://arxiv.org/abs/1809.06364)]
+\[[Friedman, Fontaine](https://arxiv.org/abs/1809.06364)\]
 - MLP-type agent’s Neural Network
 - Four reward mechanisms (last logarithmic return, average logarithmic return,
 Sharpe Ratio, profit only when closing)
 
 
-## Install 
+## Install
 We recommend python version `3.8.10`. (Check your version with `python3 --version`)
 
 We recommend using a virtual environment: to create it, run
@@ -58,7 +58,7 @@ subfolder contains the results of each single experiment.
 
 ## Reproduce experiments in paper (Bitcoin dataset only)
 We provide all configuration files for the experiments on the Bitcoin dataset
-that are shown in the paper.
+that are shown in the [paper](https://arxiv.org/abs/2203.04579).
 To run the experiments use:
 ```
 git checkout e2bc651b07eec388ee0b03228e0acdee8550ba7d
