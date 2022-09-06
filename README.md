@@ -16,7 +16,7 @@ Sharpe Ratio, profit only when closing)
 
 
 ## Install
-We recommend python version `3.8.10`. (Check your version with `python3 --version`)
+We recommend python version `3.10`. (Check your version with `python3 --version`)
 
 We recommend using a virtual environment: to create it, run
 ```
