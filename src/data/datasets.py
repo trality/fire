@@ -18,10 +18,17 @@ def fetch_dataset():
 def load_dataset():
     df = pd.read_csv(f"{const.REFERENCE_DIRECTORY}/{par.dataset.path}")
     df = df.rename({par.dataset.column_price: 'price'}, axis='columns')
-    if len(df) < par.dataset.end:
-        raise ValueError('par.dataset.end exceeds dataset length')
-    return df.iloc[par.dataset.start:par.dataset.end]
+    return slice_df(df)
 
+
+def slice_df(df: pd.DataFrame):
+    if isinstance(par.dataset.start, str) and isinstance(par.dataset.end, str):
+        return df.set_index(par.dataset.time_column or 'start').loc[par.dataset.start:par.dataset.end]
+    if isinstance(par.dataset.start, int) and isinstance(par.dataset.end, int):
+        if len(df) < par.dataset.end:
+            raise ValueError('par.dataset.end exceeds dataset length')
+        return df.iloc[par.dataset.start:par.dataset.end]
+        
 
 def split_df(df: pd.DataFrame, cut: float):
     split_point = int(len(df) * cut)
