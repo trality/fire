@@ -17,6 +17,5 @@
     "frequency_q_learning": 200,
     "batch_size_replay_sampling": 2048,
     "Q_learning_iterations": 20,
-    "discount_factor_Q_learning": 0.9,
-    "same_age_replay": true
+    "discount_factor_Q_learning": 0.9
 }

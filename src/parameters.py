@@ -1,11 +1,38 @@
 import math
+from typing import List, Dict
 
 from src.util import load_json
 
 
-def assign_attributes(object, d: dict):
-    for k in d:
-        setattr(object, k, d[k])
+def set_max_possible_gamma(Parameters, max_possible_gamma, discount_factor_Q_learning):
+    if max_possible_gamma == 'auto':
+        Parameters.max_possible_gamma = discount_factor_Q_learning + \
+            0.9 * (1 - discount_factor_Q_learning)
+    else:
+        Parameters.max_possible_gamma = 1
+
+
+def set_rewards(Parameters, rewards):
+    if isinstance(rewards, list):
+        Parameters.rewards = rewards
+    else:
+        Parameters.rewards = [rewards]
+
+
+def set_frequency_target_exchange(Parameters, frequency_target_exchange):
+    # frequency_target_exchange is set to after each episode (-1)
+    Parameters.frequency_target_exchange = frequency_target_exchange
+    if frequency_target_exchange < 0 and (Parameters.episode_length is None):
+        # increase default frequency if full dataset is used as episode
+        Parameters.frequency_target_exchange = 4
+
+
+def set_epochs_for_Q_Learning_fit(Parameters):
+    if Parameters.model.epochs_for_Q_Learning_fit == 'auto':
+        Parameters.model.epochs_for_Q_Learning_fit = math.ceil(
+            Parameters.TRAINING_INTENSITY
+            * (Parameters.model.batch_size_for_learning
+               / Parameters.batch_size_replay_sampling))
 
 
 class Parameters():
@@ -48,23 +75,32 @@ class Parameters():
     min_eps = 0.01
     decay = 0.01
 
-    def set(model, dataset,
-            frequency_q_learning, Q_learning_iterations, discount_factor_Q_learning,
-            batch_size_replay_sampling, frequency_target_exchange=-1,
-            environment={}, random_gamma=False, train=True,
-            adjacent_episodes=False, frequency_of_weight_sampling=1,
-            learning_rate_Q_learning=0.7, replay_max_len=25000,
-            max_possible_gamma='auto', long_positions_only=True,
-            plot_frequency=10, window_size=60,
-            rewards="all", episode_length=None, **kwargs):
+    @staticmethod
+    def set(
+        frequency_q_learning: int,
+        Q_learning_iterations: int,
+        discount_factor_Q_learning: float,
+        batch_size_replay_sampling: int,
+        frequency_target_exchange: int = -1,
+        dataset: Dict = {},
+        model: Dict = {},
+        environment: Dict = {},
+        random_gamma: bool = False,
+        train: bool = True,
+        adjacent_episodes: bool = False,
+        frequency_of_weight_sampling: int = 1,
+        learning_rate_Q_learning: float = 0.7,
+        replay_max_len: int = 25000,
+        max_possible_gamma: str | float = 'auto',
+        long_positions_only: bool = True,
+        plot_frequency: int = 10,
+        window_size: int = 60,
+        rewards: str | List[str] = "all",
+        episode_length: int | None = None,
+    ):
 
-        # model
-        Parameters.model = ModelParameters(**model)
-
-        # dataset
         Parameters.dataset = DatasetParameters(**dataset)
-
-        # environment
+        Parameters.model = ModelParameters(**model)
         Parameters.environment = EnvironmentParameters(**environment)
 
         # RL
@@ -80,53 +116,24 @@ class Parameters():
         Parameters.batch_size_replay_sampling = batch_size_replay_sampling
         Parameters.min_possible_gamma = discount_factor_Q_learning * 0.9
 
-        Parameters.set_max_possible_gamma(
-            max_possible_gamma, discount_factor_Q_learning)
+        set_max_possible_gamma(
+            Parameters, max_possible_gamma, discount_factor_Q_learning)
 
         Parameters.long_positions_only = long_positions_only
 
         Parameters.Q_learning_iterations = Q_learning_iterations
         Parameters.number_iterations = Parameters.start_greedy_shift + Parameters.Q_learning_iterations
 
-        Parameters.set_frequency_target_exchange(frequency_target_exchange)
+        set_frequency_target_exchange(Parameters, frequency_target_exchange)
 
         Parameters.learning_rate_Q_learning = learning_rate_Q_learning
         Parameters.discount_factor_Q_learning = discount_factor_Q_learning
 
-        Parameters.set_epochs_for_Q_Learning_fit()
+        set_epochs_for_Q_Learning_fit(Parameters)
 
         Parameters.plot_frequency = plot_frequency
 
-        Parameters.set_rewards(rewards)
-
-        assign_attributes(Parameters, kwargs)
-
-    def set_max_possible_gamma(max_possible_gamma, discount_factor_Q_learning):
-        if max_possible_gamma == 'auto':
-            Parameters.max_possible_gamma = discount_factor_Q_learning + \
-                0.9 * (1 - discount_factor_Q_learning)
-        else:
-            Parameters.max_possible_gamma = 1
-
-    def set_rewards(rewards):
-        if isinstance(rewards, list):
-            Parameters.rewards = rewards
-        else:
-            Parameters.rewards = [rewards]
-
-    def set_frequency_target_exchange(frequency_target_exchange):
-        # frequency_target_exchange is set to after each episode (-1)
-        Parameters.frequency_target_exchange = frequency_target_exchange
-        if frequency_target_exchange < 0 and (Parameters.episode_length is None):
-            # increase default frequency if full dataset is used as episode
-            Parameters.frequency_target_exchange = 4
-
-    def set_epochs_for_Q_Learning_fit():
-        if Parameters.model.epochs_for_Q_Learning_fit == 'auto':
-            Parameters.model.epochs_for_Q_Learning_fit = math.ceil(
-                Parameters.TRAINING_INTENSITY
-                * (Parameters.model.batch_size_for_learning
-                   / Parameters.batch_size_replay_sampling))
+        set_rewards(Parameters, rewards)
 
     @staticmethod
     def from_json(json: str):
@@ -135,30 +142,39 @@ class Parameters():
 
 class ModelParameters():
 
-    def __init__(self, batch_size_for_learning, scale_NN=1, l2_penalty=0,
-                 dropout_level=0, epochs_for_Q_Learning_fit='auto',
-                 **kwargs):
-
-        self.scale_NN = scale_NN
+    def __init__(
+        self,
+        batch_size_for_learning: int = 64,
+        scale_NN: int = 1,
+        l2_penalty: float = 0,
+        dropout_level: float = 0,
+        epochs_for_Q_Learning_fit: str = 'auto',
+    ):
         self.batch_size_for_learning = batch_size_for_learning
+        self.scale_NN = scale_NN
         self.l2_penalty = l2_penalty
         self.dropout_level = dropout_level
         self.epochs_for_Q_Learning_fit = epochs_for_Q_Learning_fit
 
-        assign_attributes(self, kwargs)
-
 
 class DatasetParameters():
 
-    def __init__(self, name, path=None, column_price=None, column_time=None,
-                 start_end=[0, None], length=None,
-                 var=0., eval_proportion=0.2, test_proportion=0.2,
-                 **kwargs):
-
+    def __init__(
+        self,
+        name: str = "unkown_dataset",
+        column_price: str = "close",
+        column_time: str = "start",
+        path: str | None = None,
+        start_end=[0, None],
+        length: int | None = None,
+        var: float = 0.,
+        eval_proportion: float = 0.2,
+        test_proportion: float = 0.2,
+    ):
         self.name = name
-        self.path = path
         self.column_price = column_price
         self.column_time = column_time
+        self.path = path or "default_path"
 
         self.start, self.end = start_end
         self.length = length
@@ -167,19 +183,18 @@ class DatasetParameters():
         elif self.end is None:
             self.end = self.length
 
+        self.var = var
         self.eval_proportion = eval_proportion
         self.test_proportion = test_proportion
-        self.var = var
-
-        assign_attributes(self, kwargs)
 
 
 class EnvironmentParameters():
 
-    def __init__(self, trade_fee_bid=0.0, trade_fee_ask=0.0,
-                 **kwargs):
-
+    def __init__(
+        self,
+        trade_fee_bid: float = 0.0,
+        trade_fee_ask: float = 0.0,
+    ):
         self.trade_fee_bid = trade_fee_bid
         self.trade_fee_ask = trade_fee_ask
 
-        assign_attributes(self, kwargs)
