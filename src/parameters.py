@@ -166,7 +166,7 @@ class DatasetParameters():
         time_column: str = "start",
         path: str | None = None,
         start: int | str = 0,
-        end: int | str = None,
+        end: int | str | None = None,
         length: int | None = None,
         var: float = 0.,
         eval_proportion: float = 0.2,
