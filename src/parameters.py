@@ -163,9 +163,10 @@ class DatasetParameters():
         self,
         name: str = "unkown_dataset",
         column_price: str = "close",
-        column_time: str = "start",
+        time_column: str = "start",
         path: str | None = None,
-        start_end=[0, None],
+        start: int | str = 0,
+        end: int | str | None = None,
         length: int | None = None,
         var: float = 0.,
         eval_proportion: float = 0.2,
@@ -173,15 +174,19 @@ class DatasetParameters():
     ):
         self.name = name
         self.column_price = column_price
-        self.column_time = column_time
+        self.time_column = time_column
         self.path = path or "default_path"
 
-        self.start, self.end = start_end
+        self.start = start
+        self.end = end
         self.length = length
-        if length is None:
+        
+        if length and self.end:
+            raise ValueError('You should not specify a length if start and end are given')
+        if length is None and isinstance(start, int) and isinstance(end, int):
             self.length = self.end - self.start
-        elif self.end is None:
-            self.end = self.length
+        if self.end is None:
+            self.end = self.start + self.length
 
         self.var = var
         self.eval_proportion = eval_proportion

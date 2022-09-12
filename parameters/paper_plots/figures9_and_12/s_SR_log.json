@@ -3,7 +3,7 @@
         "name": "bitcoin_paper_fig9-12_s",
         "path": "datasets/btc_h.csv",
         "column_price": "close",
-        "column_time": "start",
+        "time_column": "start",
         "length": 25000,
         "eval_proportion": 0.16,
         "test_proportion": 0.2
