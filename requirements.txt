@@ -6,3 +6,4 @@ requests==2.26.0
 scipy==1.9.1
 tensorflow==2.9.2
 tqdm==4.64.1
+yfinance==0.1.74
