@@ -85,9 +85,9 @@ def run(lower_bound, interval, symbol, target):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--symbol", help="Symbol to download", type=str)
-    parser.add_argument("--interval", help="Interval to download", type=str)
+    parser.add_argument("--symbol", help="Symbol to download", type=str, required=True)
+    parser.add_argument("--interval", help="Interval to download", type=str, required=True)
     parser.add_argument("--lower_bound", help="Lower unix timestamp bound", type=int, default=0)
-    parser.add_argument("--target", help="Target file", type=str)
+    parser.add_argument("--target", help="Target file", type=str, required=True)
 
     run(**vars(parser.parse_args()))
