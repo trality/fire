@@ -7,7 +7,7 @@ __pycache__/
 .*
 
 # Experiments results
-results_of_experiments/
+*results_of_experiments*/
 
 # datasets
 datasets
