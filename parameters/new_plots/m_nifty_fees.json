@@ -1,6 +1,6 @@
 {
     "dataset": {
-        "name": "nifty50_paper_fig9-12_m",
+        "name": "m_nifty_fees",
         "path": "datasets/nifty50_m.csv",
         "column_price": "close",
         "time_column": "start",
@@ -16,6 +16,11 @@
         "l2_penalty": 1e-4,
         "dropout_level": 0.1,
         "scale_NN": 2
+    },
+
+    "environment": {
+        "trade_fee_bid" : 1e-3,
+        "trade_fee_ask" : 1e-3
     },
 
     "rewards": ["LR", "SR", "ALR", "POWC"],

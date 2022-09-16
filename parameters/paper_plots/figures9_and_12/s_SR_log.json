@@ -1,10 +1,11 @@
 {
     "dataset": {
-        "name": "bitcoin_paper_fig9-12_s",
-        "path": "datasets/btc_h.csv",
+        "name": "nifty50_paper_fig9-12_s",
+        "path": "datasets/nifty50_m.csv",
         "column_price": "close",
         "time_column": "start",
-        "length": 25000,
+        "start": "2020-03-16",
+        "end": "2020-06-24",
         "eval_proportion": 0.16,
         "test_proportion": 0.2
     },

@@ -7,7 +7,8 @@ setup:
 
 datasets:
 	sh scripts/download_datasets.sh
-	
+	wget -O datasets/Nifty50/NIFTY_2019_2020.parquet "https://www.dropbox.com/s/and59fruroud93g/NIFTY_2019_2020.parquet?dl=1"
+
 test_multi:
 	python main.py parameters/sin_wave_test_multi.json
 

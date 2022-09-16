@@ -1,11 +1,10 @@
 {
     "dataset": {
-        "name": "nifty50_paper_fig9-12_m",
-        "path": "datasets/nifty50_m.csv",
+        "name" : "s_SR_btc_fees",
+        "path": "datasets/btc_h.csv",
         "column_price": "close",
         "time_column": "start",
-        "start": "2020-03-16",
-        "end": "2020-06-24",
+        "length" : 25000,
         "eval_proportion": 0.16,
         "test_proportion": 0.2
     },
@@ -13,15 +12,20 @@
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
         "batch_size_for_learning": 2048,
-        "l2_penalty": 1e-4,
+        "l2_penalty": 0,
         "dropout_level": 0.1,
-        "scale_NN": 2
+        "scale_NN": 4
     },
 
-    "rewards": ["LR", "SR", "ALR", "POWC"],
+    "environment": {
+        "trade_fee_bid" : 1e-3,
+        "trade_fee_ask" : 1e-3
+    },
 
-    "window_size": 60,
+    "rewards": ["SR"],
 
+    "window_size": 24,
+    
     "episode_length": 2000,
     "frequency_q_learning": 1000,
     "frequency_target_exchange": 4,  

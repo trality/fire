@@ -1,31 +1,34 @@
 {
     "dataset": {
-        "name": "nifty50_paper_fig9-12_m",
-        "path": "datasets/nifty50_m.csv",
+        "name" : "m_spy_fees",
+        "path": "datasets/spy_d.csv",
         "column_price": "close",
         "time_column": "start",
-        "start": "2020-03-16",
-        "end": "2020-06-24",
         "eval_proportion": 0.16,
         "test_proportion": 0.2
     },
 
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
-        "batch_size_for_learning": 2048,
+        "batch_size_for_learning": 60,
         "l2_penalty": 1e-4,
         "dropout_level": 0.1,
-        "scale_NN": 2
+        "scale_NN": 4
+    },
+
+    "environment": {
+        "trade_fee_bid" : 1e-3,
+        "trade_fee_ask" : 1e-3
     },
 
     "rewards": ["LR", "SR", "ALR", "POWC"],
 
-    "window_size": 60,
-
-    "episode_length": 2000,
-    "frequency_q_learning": 1000,
+    "window_size": 122,
+    
+    "episode_length": 500,
+    "frequency_q_learning": 250,
     "frequency_target_exchange": 4,  
-    "batch_size_replay_sampling": 2048,
+    "batch_size_replay_sampling": 1000,
     "Q_learning_iterations": 500,
     "discount_factor_Q_learning": 0.9,
     "random_gamma": false,
