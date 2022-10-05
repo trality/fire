@@ -20,6 +20,7 @@ class Environment():
         self.path_plots = path_plots
         self.trade_fee_bid = trade_fee_bid
         self.trade_fee_ask = trade_fee_ask
+        self.fee_log_return_penalty = -(np.log(1 + self.trade_fee_ask) + np.log(1 + self.trade_fee_bid))
 
         self._start_tick = self.get_start_tick()
         self._end_tick = self.get_last_tick()
@@ -122,31 +123,17 @@ class Environment():
         and falling prices in Short positions.
         The actions Sell/Buy or Hold during a Long position trigger the sell/buy-fee.
         """
+        log_fee_penalty = self.fee_log_return_penalty if self.is_tradesignal(action) else 0
+        current_price = self.prices[self._current_tick]
+        previous_price = self.prices[self._current_tick - 1]
+        
         # Long positions
         if self._position == Positions.Long:
-            current_price = self.prices[self._current_tick]
-            if action == Actions.Sell.value or action == Actions.Hold.value:
-                current_price = self.add_sell_fee(current_price)
-
-            previous_price = self.prices[self._current_tick - 1]
-            if (self._position_history[self._current_tick - 1] == Positions.Short
-                    or self._position_history[self._current_tick - 1] == Positions.Neutral):
-                previous_price = self.add_buy_fee(previous_price)
-
-            return np.log(current_price) - np.log(previous_price)
+            return np.log(current_price) - np.log(previous_price) + log_fee_penalty
 
         # Short positions
         if self._position == Positions.Short:
-            current_price = self.prices[self._current_tick]
-            if action == Actions.Buy.value or action == Actions.Hold.value:
-                current_price = self.add_buy_fee(current_price)
-
-            previous_price = self.prices[self._current_tick - 1]
-            if (self._position_history[self._current_tick - 1] == Positions.Long
-                    or self._position_history[self._current_tick - 1] == Positions.Neutral):
-                previous_price = self.add_sell_fee(previous_price)
-
-            return np.log(previous_price) - np.log(current_price)
+            return np.log(previous_price) - np.log(current_price) + log_fee_penalty
 
         return 0
 
