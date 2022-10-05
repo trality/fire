@@ -1,7 +1,7 @@
 {
     "dataset": {
-        "name" : "m_spy",
-        "path": "datasets/spy_d.csv",
+        "name" : "m_gme",
+        "path": "datasets/gme_d.csv",
         "column_price": "close",
         "time_column": "start",
         "eval_proportion": 0.16,
@@ -10,21 +10,21 @@
 
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
-        "batch_size_for_learning": 200,
-        "l2_penalty": 1e-4,
+        "batch_size_for_learning": 300,
+        "l2_penalty": 2e-4,
         "dropout_level": 0.1,
         "scale_NN": 4
     },
 
     "rewards": ["LR", "SR", "ALR", "POWC"],
 
-    "window_size": 96,
+    "window_size": 60,
     
-    "episode_length": 400,
-    "frequency_q_learning": 200,
+    "episode_length": 1000,
+    "frequency_q_learning": 250,
     "frequency_target_exchange": 4,  
-    "batch_size_replay_sampling": 800,
-    "Q_learning_iterations": 500,
+    "batch_size_replay_sampling": 1500,
+    "Q_learning_iterations": 250,
     "discount_factor_Q_learning": 0.9,
     "random_gamma": false,
     "long_positions_only": false

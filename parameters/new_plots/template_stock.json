@@ -1,30 +1,30 @@
 {
     "dataset": {
-        "name" : "m_aapl",
-        "path": "datasets/aapl_d.csv",
+        "name" : null,
+        "path": null,
         "column_price": "close",
         "time_column": "start",
-        "eval_proportion": 0.16,
+        "eval_proportion": 0.2,
         "test_proportion": 0.2
     },
 
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
-        "batch_size_for_learning": 300,
-        "l2_penalty": 2e-4,
+        "batch_size_for_learning": 700,
+        "l2_penalty": 1e-3,
         "dropout_level": 0.1,
-        "scale_NN": 4
+        "scale_NN": 2
     },
 
-    "rewards": ["LR", "SR", "ALR", "POWC"],
+    "rewards": null,
 
     "window_size": 60,
     
-    "episode_length": 600,
-    "frequency_q_learning": 300,
+    "episode_length": 500,
+    "frequency_q_learning": 250,
     "frequency_target_exchange": 4,  
-    "batch_size_replay_sampling": 1800,
-    "Q_learning_iterations": 500,
+    "batch_size_replay_sampling": 700,
+    "Q_learning_iterations": 300,
     "discount_factor_Q_learning": 0.9,
     "random_gamma": false,
     "long_positions_only": false

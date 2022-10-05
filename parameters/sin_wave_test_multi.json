@@ -11,6 +11,11 @@
         "scale_NN": 1
     },
 
+    "environment": {
+        "trade_fee_bid" : 1e-3,
+        "trade_fee_ask" : 1e-3
+    },
+
     "window_size" : 12,
 
     "rewards" : ["LR", "SR", "POWC"],

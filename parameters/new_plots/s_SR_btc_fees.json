@@ -1,6 +1,6 @@
 {
     "dataset": {
-        "name" : "s_SR_btc_fees",
+        "name" : "m_btc_fees",
         "path": "datasets/btc_h.csv",
         "column_price": "close",
         "time_column": "start",
@@ -11,8 +11,8 @@
 
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
-        "batch_size_for_learning": 2048,
-        "l2_penalty": 0,
+        "batch_size_for_learning": 2000,
+        "l2_penalty": 1e-3,
         "dropout_level": 0.1,
         "scale_NN": 4
     },
@@ -24,12 +24,12 @@
 
     "rewards": ["SR"],
 
-    "window_size": 24,
+    "window_size": 100,
     
     "episode_length": 2000,
     "frequency_q_learning": 1000,
     "frequency_target_exchange": 4,  
-    "batch_size_replay_sampling": 2048,
+    "batch_size_replay_sampling": 6000,
     "Q_learning_iterations": 500,
     "discount_factor_Q_learning": 0.9,
     "random_gamma": false,
