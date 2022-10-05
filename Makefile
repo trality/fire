@@ -1,4 +1,4 @@
-.PHONY: all setup datasets test* clear_experiments
+.PHONY: all setup test* clear_experiments
 
 all : setup datasets
 
@@ -6,9 +6,8 @@ setup:
 	python3 -m pip install -r requirements.txt
 
 datasets:
-	mkdir -p datasets/
-	wget -O datasets/btc_h.csv "http://static.trality.com/fire/data/btc_h.csv"
-
+	sh scripts/download_datasets.sh
+	
 test_multi:
 	python main.py parameters/sin_wave_test_multi.json
 

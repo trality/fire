@@ -22,6 +22,8 @@ def load_dataset():
 
 
 def slice_df(df: pd.DataFrame):
+    if not par.dataset.end:
+        return df
     if isinstance(par.dataset.start, str) and isinstance(par.dataset.end, str):
         return df.set_index(par.dataset.time_column or 'start').loc[par.dataset.start:par.dataset.end]
     if isinstance(par.dataset.start, int) and isinstance(par.dataset.end, int):

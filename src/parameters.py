@@ -185,7 +185,7 @@ class DatasetParameters():
             raise ValueError('You should not specify a length if start and end are given')
         if length is None and isinstance(start, int) and isinstance(end, int):
             self.length = self.end - self.start
-        if self.end is None:
+        if self.end is None and length:
             self.end = self.start + self.length
 
         self.var = var
