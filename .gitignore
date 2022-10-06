@@ -8,6 +8,7 @@ __pycache__/
 
 # Experiments results
 *results_of_experiments*/
+plots
 
 # datasets
 datasets
