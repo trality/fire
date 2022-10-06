@@ -51,7 +51,7 @@ def distribution_plot(df: pd.DataFrame, name: str):
     if len(df_performance_test) > 3:
         boxplot = df_performance_test.boxplot()
         boxplot.set_title(
-            f'Test set performance (Sharpe Ratio)\n{len(df_performance_test)} samples')
+            f'Test set performance (Sharpe Ratio)\n{len(df_performance_test)} experiments')
         fig.savefig(f'{name}.png')
 
 
@@ -70,7 +70,7 @@ def distribution_plot(df: pd.DataFrame, name: str):
 
     if samples > 5:
         sns.boxplot(data=df_plot, x="reward", y="performance", hue="dataset").set_title(
-            f'{name.split("/")[-1]}, {samples} samples')
+            f'{name.split("/")[-1].split("_")[-1].upper()} ({samples} experiments)')
         os.makedirs('plots', exist_ok=True)
         plt.savefig(f'plots/{name.split("/")[-1]}.png')
     plt.cla()
