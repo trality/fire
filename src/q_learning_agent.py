@@ -23,10 +23,6 @@ def lookback_array(x: np.ndarray, lookback):
              + np.arange(len(x) - lookback + 1).reshape((-1, 1))]
 
 
-def dict_to_array(d: dict):
-    return np.array(list(d.values()))
-
-
 def sample_binomial(p):
     return np.random.binomial(1, p) == 1
 
@@ -244,7 +240,7 @@ class QLearningAgent():
                     'new_position': environment.get_current_position().value,
                     'action': action,
                     'done': done,
-                    'vector_of_rewards': dict_to_array(rewards)
+                    'vector_of_rewards': rewards.to_numpy()
                 }
                 self.replay.append(experience)
 

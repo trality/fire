@@ -1,7 +1,7 @@
 import numpy as np
 from src.environment.environment import Environment, Actions, Positions
 from src.parameters import Parameters as par
-
+import pandas as pd
 
 def mean_over_std(x: np.ndarray):
     std = np.std(x, ddof=1)
@@ -17,19 +17,6 @@ def over_t_ratio(x: np.ndarray):
 
 def alr_output(x: np.ndarray):
     return np.mean(x)
-
-
-def sum_dictionaries(d1: dict, d2: dict):
-    assert set(d1) == set(d2), f"Different keys: {set(d1)}!={set(d2)}"
-    return {k: d1[k] + d2[k] for k in d1}
-
-
-def dictionary_scalar_product(d: dict, c: float):
-    return {k: v * c for k, v in d.items()}
-
-
-def dictionary_average(d: dict):
-    return sum(d.values()) / len(d)
 
 
 class EnvironmentRL(Environment):
@@ -146,17 +133,16 @@ class EnvironmentRL(Environment):
                         for r in self.rewards_dictionary.values()])
 
     def _calculate_reward(self, action):
-        return {name: float(f(self, action))
-                for name, f in self.rewards_dictionary.items()}
+        return pd.Series({name: float(f(self, action))
+                for name, f in self.rewards_dictionary.items()})
 
     def _initialize_total_reward(self):
-        self.total_reward = {r: 0 for r in self.rewards}
+        self.total_reward = pd.Series({r: 0. for r in self.rewards})
 
     def _update_total_reward(self, rewards):
-        self.total_reward = sum_dictionaries(self.total_reward, rewards)
+        self.total_reward += rewards
 
     def average_reward(self, reward=None):
         """ If reward is None, then an average of reward averages is returned"""
-        averages = dictionary_scalar_product(
-            self.total_reward, 1 / (self._current_tick - self._start_tick))
-        return averages[reward] if reward else dictionary_average(averages)
+        averages = self.total_reward/(self._current_tick - self._start_tick)
+        return averages[reward] if reward else np.mean(averages)
