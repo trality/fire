@@ -16,7 +16,7 @@ import src.constants as const
 def run_experiment(path=None):
 
     if par.train:
-        df_train, df_eval, df_test = load_train_eval_test_datasets(path)
+        df_train, df_eval, df_test = load_train_eval_test_datasets()
         df_train.to_pickle(f'{path}/datasets/df_train.pkl')
         df_eval.to_pickle(f'{path}/datasets/df_eval.pkl')
         df_test.to_pickle(f'{path}/datasets/df_test.pkl')
