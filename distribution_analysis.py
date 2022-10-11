@@ -4,6 +4,7 @@ import fnmatch
 import json
 import matplotlib.pyplot as plt
 import seaborn as sns
+import sys
 
 
 def listdir(dir: str = './'):
@@ -58,26 +59,28 @@ def distribution_plot(df: pd.DataFrame, name: str):
 def distribution_plot(df: pd.DataFrame, name: str):
     sns.set_theme()
 
+    sets = ('test', 'eval', 'train')
     df_plot = df
 
     df_plot = pd.concat({c: df[[f'performance_{c}', 'reward']].rename(
-        {f'performance_{c}': 'performance'}, axis='columns') for c in ('train', 'eval', 'test')})
+        {f'performance_{c}': 'performance'}, axis='columns') for c in sets})
 
     df_plot = df_plot.reset_index(level=0)
     df_plot.rename({'level_0': 'dataset'}, axis='columns', inplace=True)
 
-    samples = len(df)
+    samples = int(len(df)//len(set(df_plot['reward'])))
 
-    if samples > 5:
+    if samples > 4:
         sns.boxplot(data=df_plot, x="reward", y="performance", hue="dataset").set_title(
-            f'{name.split("/")[-1].split("_")[-1].upper()} ({samples} experiments)')
+            f'{name.split("/")[-1]} ({samples} experiments)')
         os.makedirs('plots', exist_ok=True)
         plt.savefig(f'plots/{name.split("/")[-1]}.png')
     plt.cla()
 
 
 def main():
-    experiment_folder = fnmatch.filter(listdir(), '*results*experiments*')[0]
+    
+    experiment_folder = fnmatch.filter(listdir(), '*results*experiments*')[0] if len(sys.argv)<2 else sys.argv[1]
 
     experiments: list = listdir(experiment_folder)
 

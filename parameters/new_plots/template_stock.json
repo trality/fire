@@ -1,13 +1,14 @@
 {
     "dataset": {
-        "name" : null,
+        "name": null,
         "path": null,
         "column_price": "close",
         "time_column": "start",
+        "start" : "2000-01",
+        "end" : "2022-09",
         "eval_proportion": 0.2,
         "test_proportion": 0.2
     },
-
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
         "batch_size_for_learning": 700,
@@ -15,14 +16,11 @@
         "dropout_level": 0.1,
         "scale_NN": 2
     },
-
     "rewards": null,
-
-    "window_size": 60,
-    
+    "window_size": 30,
     "episode_length": 500,
     "frequency_q_learning": 250,
-    "frequency_target_exchange": 4,  
+    "frequency_target_exchange": 4,
     "batch_size_replay_sampling": 700,
     "Q_learning_iterations": 300,
     "discount_factor_Q_learning": 0.9,

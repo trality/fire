@@ -1,29 +1,25 @@
 {
     "dataset": {
-        "name" : null,
+        "name": null,
         "path": null,
         "column_price": "close",
         "time_column": "start",
-        "length" : 25000,
+        "length": 25000,
         "eval_proportion": 0.16,
         "test_proportion": 0.2
     },
-
     "model": {
         "epochs_for_Q_Learning_fit": "auto",
         "batch_size_for_learning": 2048,
-        "l2_penalty": 5e-4,
+        "l2_penalty": 0.0001,
         "dropout_level": 0.1,
         "scale_NN": 4
     },
-
-    "rewards": ["LR", "SR", "ALR", "POWC"],
-
+    "rewards": null,
     "window_size": 24,
-    
     "episode_length": 2000,
     "frequency_q_learning": 1000,
-    "frequency_target_exchange": 4,  
+    "frequency_target_exchange": 4,
     "batch_size_replay_sampling": 2048,
     "Q_learning_iterations": 500,
     "discount_factor_Q_learning": 0.9,
