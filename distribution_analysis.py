@@ -75,6 +75,8 @@ def distribution_plot(df: pd.DataFrame, name: str):
             f'{name.split("/")[-1]} ({samples} experiments)')
         os.makedirs('plots', exist_ok=True)
         plt.savefig(f'plots/{name.split("/")[-1]}.png')
+        df_plot.to_csv(f'plots/{name.split("/")[-1]}.csv')
+
     plt.cla()
 
 
