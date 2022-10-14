@@ -45,7 +45,7 @@ def run_fold(first_fold_config: str, anchored: bool, fold_index: int, first_fold
     config['dataset']['start'] = start
     config['dataset']['end'] = end
     config['dataset']['length'] = None
-    config['dataset']['name'] += f'_fold{fold_index+1}'
+    config['dataset']['name'] += f'--fold{fold_index+1}'
     
     if anchored:
         config['dataset']['test_proportion'] = first_fold_info['first_fold_test_size']/(end-start)
