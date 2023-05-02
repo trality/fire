@@ -67,15 +67,18 @@ sh scripts/run_experiments_in_folder.sh parameters/paper_plots
 
 
 ## Datasets
-For the simulation we discussed in our paper we used two datasets:
-- Bitcoin hourly close price (BTC-USD)
-- Nifty50 minute close price
+For the simulation we discussed in our paper we used the following datasets:
+- Cryptocurrency price data (BTCUSDT, ETHUSDT, XRPUSDT) from Binance exchange, downloaded through Binance API
+- Stocks price data (AAPL, SPY), downloaded from Yahoo!finance through `yfinance` python package
+- Nifty50 minute close price, downloaded from Kaggle
 
-You can download the Bitcoin dataset by running:
+You can download all cryptocurrencies and stocks datasets by running:
 ```
 make datasets
 ```
-(this is not necessary if you already ran `make`)
+that will run the `download_datasets.sh` script (this is not necessary if you already ran `make`)
+
+Nifty50 dataset can instead be downloaded from kaggle at this [link](https://www.kaggle.com/datasets/rohanrao/nifty50-stock-market-data)
 
 
 ## Latex for plots
