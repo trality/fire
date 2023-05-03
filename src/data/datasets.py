@@ -37,7 +37,7 @@ def split_df(df: pd.DataFrame, cut: float):
     return df.iloc[:split_point], df.iloc[split_point:]
 
 
-def load_train_eval_test_datasets(path):
+def load_train_eval_test_datasets():
     df = fetch_dataset()
 
     eval_test_prop = par.dataset.eval_proportion + par.dataset.test_proportion

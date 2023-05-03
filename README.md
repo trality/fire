@@ -66,6 +66,22 @@ sh scripts/run_experiments_in_folder.sh parameters/paper_plots
 ```
 
 
+## How to run walk forward validation
+In order to run a walk forward validation run the `walk_forward_validation.py` script with the following arguments:
+```
+python walk_forward_validation.py --config <json configuration file> --n_folds <number of folds>
+```
+
+you can add the argument `--anchored` if you want the train set of each fold to start at the same point.
+
+You can add the argument `--jobs <number of jobs>` if you want to parallelize the execution.
+
+
+The given configuration file specifies the configuration of the experiment of the first fold, the following folds will be based on the same configuration but with different datasets.
+
+Currently it's not possible to run walk forward validation with synthetic datasets.
+
+
 ## Datasets
 For the simulation we discussed in our paper we used the following datasets:
 - Cryptocurrency price data (BTCUSDT, ETHUSDT, XRPUSDT) from Binance exchange, downloaded through Binance API
